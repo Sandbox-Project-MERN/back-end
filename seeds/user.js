@@ -18,14 +18,10 @@ const userData = [
 ];
 
 User.remove({}, function (err, removed) {
-  if (err) {
-    console.log("Database Error: ", err);
-  }
+  if (err) console.log("Database Error: ", err);
 
   User.create(userData, function (err, users) {
-    if (err) {
-      console.log("Database Error: ", err);
-    }
+    if (err) console.log("Database Error: ", err);
 
     console.log("Users inserted: ", users);
     process.exit();
