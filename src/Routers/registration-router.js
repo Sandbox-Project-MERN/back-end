@@ -1,63 +1,43 @@
 /* eslint-disable eqeqeq */
-const express = require('express');
-const AuthService = require('../middleware/auth-service');
-const { requireAuth } = require('../middleware/jwt-auth');
-const UserValService = require('../middleware/user-validation-service');
+const express = require("express");
+const AuthService = require("../middleware/auth-service");
+const UserValService = require("../middleware/user-validation-service");
 
 const registerRouter = express.Router();
 
-registerRouter
-  .use(requireAuth)
-  .use((req, res, next) => {
-    const { is_admin } = req.user;
+registerRouter.route("/register").post(async (req, res, next) => {
+  const { full_name, email, password, description } = req.body;
+  const regUser = { full_name, description, password, email };
 
-    if (!is_admin) return res.status(401).json({ 
-      error: 'Unauthorized request' 
-    });
-    else next();
-  });
-
-registerRouter
-  .route('/register')
-  .post(async (req, res, next) => {
-    const { full_name, user_name, password, is_admin} = req.body;
-    const regUser = { full_name, user_name, password, is_admin };
-
-    for (const [key, value] of Object.entries(regUser)) {
-      if (value == null) {
-        return res.status(400).json({
-          error: `Missing '${key}' in request body`
-        });
-      }
+  for (const [key, value] of Object.entries(regUser)) {
+    if (value == null) {
+      return next({ status: 400, message: `Missing '${key}' in request body` });
     }
+  }
 
-    const passwordError = UserValService.validatePassword(password);
+  const passwordError = UserValService.validatePassword(password);
 
-    if (passwordError) {
-      return res.status(400).json({ error: passwordError});
-    }
-    
-    try {
-      const user = await AuthService.getUserWithUserName(regUser.user_name);
+  if (passwordError) return next({ status: 400, message: passwordError });
 
-      if (user) {
-        return res.status(400).json({
-          error: 'User name not available'
-        });
-      } 
+  try {
+    const user = await AuthService.getUserWithEmail(regUser.email);
 
-      const newUser = await AuthService.createUser(regUser);
+    if (user) return next({ status: 400, message: "Email not available" });
 
-        if (!newUser) {
-          return res.status(400).json({
-            error: 'User not created, please try again'
-          });
-        }
+    const newUser = await AuthService.createUser(regUser);
 
-        delete newUser.password;
-        return res.status(201).send(newUser);
-        
-    } catch(e) {next(e)};
-  });
+    if (!newUser)
+      return next({
+        status: 400,
+        message: "User not created, please try again",
+      });
+
+    delete newUser.password;
+
+    return res.status(201).send(newUser);
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = registerRouter;
