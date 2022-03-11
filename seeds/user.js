@@ -10,7 +10,6 @@ mongoose.connect(process.env.ATLAS_URI, {
 
 const userData = [
   {
-    _id: "6046847eb930aeb69876d000",
     email: "guest@gmail.com",
     full_name: "Guest User",
     description: "here is a little about me as a guest user",
