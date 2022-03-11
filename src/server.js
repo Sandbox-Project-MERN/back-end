@@ -2,7 +2,7 @@ const app = require("./app");
 const { PORT, ATLAS_URI } = require("./config");
 const mongoose = require("mongoose");
 
-// connect to our database
+// connect to our mongo database
 mongoose.connect(ATLAS_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -17,5 +17,5 @@ connection.once("open", () => {
 
 // set up our server to listen for requests
 app.listen(PORT, () => {
-  console.log(`Express server is running on port: ${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });
