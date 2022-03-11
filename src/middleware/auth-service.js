@@ -9,8 +9,8 @@ const AuthService = {
     return await User.insertMany(newUser).then(([user]) => user);
   },
 
-  getUserWithUserName: async (user_name) => {
-    return await User.find({ user_name }).then(([user]) => user);
+  getUserWithEmail: async (email) => {
+    return await User.find({ email }).then(([user]) => user);
   },
 
   deleteUser(db, id) {
