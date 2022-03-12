@@ -1,5 +1,5 @@
-const app = require("./app");
-const { PORT, ATLAS_URI } = require("./config");
+const app = require("./api/app");
+const { PORT, ATLAS_URI } = require("./api/config");
 const mongoose = require("mongoose");
 
 // connect to our mongo database

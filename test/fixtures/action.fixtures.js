@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET, JWT_EXPIRY } = require("../../src/config");
+const { JWT_SECRET, JWT_EXPIRY } = require("../../api/config");
 
 function makeAuthHeader(user, secret = JWT_SECRET) {
   const token = jwt.sign(

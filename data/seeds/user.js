@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const User = require("../src/models/user-model");
+const User = require("../../api/user/user-model");
 
 mongoose.connect(process.env.ATLAS_URI, {
   useNewUrlParser: true,

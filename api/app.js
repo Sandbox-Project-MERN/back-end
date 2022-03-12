@@ -1,21 +1,23 @@
 const express = require("express");
+const app = express(); // set up server
+
 const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
-const { NODE_ENV } = require("./config");
-const authRouter = require("./middleware/auth-router");
-const registerRouter = require("./routers/registration-router");
 
+const { NODE_ENV } = require("./config");
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 
-const app = express(); // set up server
+const authRouter = require("./auth/auth-router");
+const userRouter = require("./user/user-router");
+
 // app.use(morgan(morganOption)); // add security & semantic middleware
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
-app.use("/api/auth", registerRouter);
+app.use("/api/user", userRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello!");

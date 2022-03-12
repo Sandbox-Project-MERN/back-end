@@ -1,5 +1,5 @@
 const supertest = require("supertest");
-const app = require("../src/app");
+const app = require("../api/app");
 
 const { TEST_ATLAS_URI } = process.env;
 
@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 
 const seedTestTables = require("./fixtures/seedTestTables");
 
-const { JWT_SECRET, JWT_EXPIRY } = require("../src/config");
+const { JWT_SECRET, JWT_EXPIRY } = require("../api/config");
 
 const Actions = require("./fixtures/action.fixtures");
 const Content = require("./fixtures/dbcontent.fixtures");
@@ -178,7 +178,7 @@ describe("Login and Register endpoints", () => {
     });
 
     describe("successful registration", () => {
-      it.only("when valid credentials responds with 201, creates new user in users_table by checking if we can login with that user information", () => {
+      it("when valid credentials responds with 201, creates new user in users_table by checking if we can login with that user information", () => {
         const newUser = Actions.makeNewUser();
 
         return supertest(app)

@@ -2,15 +2,15 @@
   "name": "sandbox-apps-project-back-end",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "test": "mocha --require test/setup.js",
+    "test": "mocha --require test/setup.js --timeout 10000",
     "watch": "npm t -- --watch",
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "predeploy": "npm audit",
     "deploy": "git push heroku main",
-    "seed:production": "node ./seeds/user.js"
+    "seed:production": "node .data/seeds/user.js"
   },
   "keywords": [],
   "engines": {
