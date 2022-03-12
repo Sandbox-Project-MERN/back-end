@@ -1,3 +1,5 @@
+const UserService = require("../user/user-service");
+
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL =
   /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&])[\S]+/;
 
@@ -17,4 +19,16 @@ const validatePassword = (password) => {
   return null;
 };
 
-module.exports = { validatePassword };
+const emailAlreadyExists = async (req, res, next) => {
+  const { email } = req.body;
+  const _id = req.params._id;
+
+  const foundUser = await UserService.getUserWithEmail(email);
+
+  if (!foundUser) return next();
+
+  if (foundUser.email === email && foundUser._id == _id) return next();
+  else return next({ status: 400, message: "Email already taken" });
+};
+
+module.exports = { validatePassword, emailAlreadyExists };

@@ -5,8 +5,12 @@ const UserService = {
     return await User.find().select(["email", "full_name", "description"]);
   },
 
-  updateUser: async (user) => {
-    return await User.updateOne({ email }, user);
+  getUserWithEmail: async (email) => {
+    return await User.find({ email }).then(([user]) => user);
+  },
+
+  updateUser: async (_id, user) => {
+    return await User.updateOne({ _id }, user);
   },
 };
 
