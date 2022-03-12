@@ -16,7 +16,6 @@ router.post("/register", async (req, res, next) => {
   }
 
   const passwordError = validatePassword(password);
-
   if (passwordError) return next({ status: 400, message: passwordError });
 
   try {

@@ -1,7 +1,7 @@
 const supertest = require("supertest");
 const app = require("../api/app");
 
-const { TEST_ATLAS_URI } = process.env;
+const { TEST_ATLAS_URI } = require("../api/config");
 
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");

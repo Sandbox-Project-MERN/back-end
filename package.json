@@ -10,7 +10,7 @@
     "dev": "nodemon index.js",
     "predeploy": "npm audit",
     "deploy": "git push heroku main",
-    "seed:production": "node .data/seeds/user.js"
+    "seed:production": "node ./data/seeds/user.js"
   },
   "keywords": [],
   "engines": {
