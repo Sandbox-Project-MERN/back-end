@@ -1,7 +1,11 @@
 /* eslint-disable eqeqeq */
 const express = require("express");
 const AuthService = require("./auth-service");
-const { validatePassword } = require("../user/user-middleware");
+const {
+  validatePassword,
+  checkUserExists,
+} = require("../user/user-middleware");
+const { validateLogin } = require("../auth/auth-middleware");
 
 const router = express.Router();
 
@@ -39,41 +43,35 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
-router.post("/login", async (req, res, next) => {
-  const { email, password } = req.body;
-  const loginUser = { email, password };
+router.post(
+  "/login",
+  validateLogin,
+  checkUserExists,
+  async (req, res, next) => {
+    const { password } = req.body;
 
-  for (const [key, value] of Object.entries(loginUser)) {
-    if (value == null) {
-      return res.status(400).json({
-        error: `Missing '${key}' in request body`,
+    try {
+      const userFromDb = req.user;
+
+      const match = await AuthService.comparePasswords(
+        password,
+        userFromDb.password
+      );
+
+      if (!match) return next({ status: 400, message: "Invalid password" });
+
+      const sub = userFromDb.email;
+      const payload = {
+        user_id: userFromDb._id,
+        name: userFromDb.full_name,
+      };
+      return res.send({
+        authToken: AuthService.createJwt(sub, payload),
       });
+    } catch (err) {
+      next(err);
     }
   }
-
-  try {
-    const user = await AuthService.getUserWithEmail(loginUser.email);
-
-    if (!user) return next({ status: 400, message: "Invalid email" });
-
-    const pw = await AuthService.comparePasswords(
-      loginUser.password,
-      user.password
-    );
-
-    if (!pw) return next({ status: 400, message: "Invalid password" });
-
-    const sub = user.email;
-    const payload = {
-      user_id: user._id,
-      name: user.full_name,
-    };
-    return res.send({
-      authToken: AuthService.createJwt(sub, payload),
-    });
-  } catch (err) {
-    next(err);
-  }
-});
+);
 
 module.exports = router;
