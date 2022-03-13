@@ -19,7 +19,14 @@ const UserService = {
     await User.updateOne({ _id }, user);
 
     return await User.find({ _id })
-      .select(["email", "full_name", "description", "_id"])
+      .select([
+        "email",
+        "full_name",
+        "description",
+        "_id",
+        "photo_url",
+        "photo_id",
+      ])
       .then(([user]) => user);
   },
 };

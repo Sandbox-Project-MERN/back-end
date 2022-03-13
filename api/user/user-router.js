@@ -32,15 +32,16 @@ router.put(
 );
 
 router.post(
-  "/upload/image/:_id",
+  "/image-upload/:_id",
   ImageService.uploadImage(),
   (req, res, next) => {
-    setTimeout(() => {
-      // UserService.updateUser(req.params._id, req.body).then((updatedUser) =>
-      //   res.status(201).json(updatedUser)
-      // );
+    const { filename, id } = req.file;
 
-      res.status(200).json(req.file);
+    setTimeout(() => {
+      UserService.updateUser(req.params._id, {
+        photo_url: filename,
+        photo_id: id,
+      }).then((updatedUser) => res.status(201).json(updatedUser));
     }, 1000);
   }
 );
