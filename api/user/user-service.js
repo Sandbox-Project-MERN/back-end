@@ -2,7 +2,13 @@ const User = require("../user/user-model");
 
 const UserService = {
   getAllUsers: async () => {
-    return await User.find().select(["email", "full_name", "description"]);
+    return await User.find().select([
+      "email",
+      "full_name",
+      "description",
+      "photo_url",
+      "photo_id",
+    ]);
   },
 
   getUserWithEmail: async (email) => {
@@ -11,7 +17,7 @@ const UserService = {
 
   getUserWhere: async (filter) => {
     return await User.find(filter)
-      .select(["email", "full_name", "description"])
+      .select(["email", "full_name", "description", "photo_url", "photo_id"])
       .then(([user]) => user);
   },
 

@@ -11,7 +11,7 @@ router.get("/", (req, res, next) => {
 });
 
 // get user info by _id
-router.get("/:_id", (req, res, next) => {
+router.get("/:_id", requireAuth, (req, res, next) => {
   UserService.getUserWhere({ _id: req.params._id }).then((user) =>
     res.status(200).json(user)
   );

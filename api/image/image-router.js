@@ -68,41 +68,32 @@ router.get("/files", (req, res) => {
   gfs.files.find().toArray((err, files) => {
     // Check if files
     if (!files || files.length === 0)
-      return res.status(404).json({
-        err: "No files exist",
-      });
+      return next({ status: 404, message: "No Image Files Found" });
 
     // Files exist
     return res.json(files);
   });
 });
 
-// @route GET /image/:filename
+// @route GET api/image/:filename
 // @desc Display Image
-router.get("/image/:filename", (req, res) => {
+router.get("/:filename", (req, res, next) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
     if (!file || file.length === 0)
-      return res.status(404).json({
-        err: "No file exists",
-      });
+      return next({ status: 404, message: "No Image Found" });
 
-    // Check if image
     if (file.contentType === "image/jpeg" || file.contentType === "image/png") {
       gridFSBucket.openDownloadStream(file._id).pipe(res);
-    } else {
-      res.status(404).json({
-        err: "Not an image",
-      });
-    }
+    } else next({ status: 404, message: "Not an image" });
   });
 });
 
-// @route DELETE /files/:id
+// @route DELETE api/image/:id
 // @desc  Delete file
-router.delete("/files/:id", (req, res) => {
-  gfs.remove({ _id: req.params.id, root: "uploads" }, (err, gridStore) => {
-    if (err) return res.status(404).json({ err: err });
+router.delete("/files/:id", (req, res, next) => {
+  gfs.remove({ _id: req.params.id, root: "user_images" }, (err, gridStore) => {
+    if (err) next({ status: 404, message: "Not an image" });
   });
 });
 
