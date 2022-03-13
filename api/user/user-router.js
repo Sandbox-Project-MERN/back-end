@@ -26,7 +26,7 @@ router.put(
       UserService.updateUser(req.params._id, req.body).then((updatedUser) =>
         res.status(201).json(updatedUser)
       );
-    }, 2000);
+    }, 1000);
   }
 );
 
