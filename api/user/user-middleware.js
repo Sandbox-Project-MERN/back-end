@@ -31,7 +31,7 @@ const emailAlreadyExists = async (req, res, next) => {
   else return next({ status: 400, message: "Email already taken" });
 };
 
-const checkUserExists = async (req, res, next) => {
+const checkUserExistsByEmail = async (req, res, next) => {
   const foundUser = await UserService.getUserWithEmail(req.body.email);
 
   if (foundUser) {
@@ -44,4 +44,8 @@ const checkUserExists = async (req, res, next) => {
     });
 };
 
-module.exports = { validatePassword, emailAlreadyExists, checkUserExists };
+module.exports = {
+  validatePassword,
+  emailAlreadyExists,
+  checkUserExistsByEmail,
+};

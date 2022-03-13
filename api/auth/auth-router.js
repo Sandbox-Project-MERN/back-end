@@ -3,7 +3,7 @@ const express = require("express");
 const AuthService = require("./auth-service");
 const {
   validatePassword,
-  checkUserExists,
+  checkUserExistsByEmail,
 } = require("../user/user-middleware");
 const { validateLogin } = require("../auth/auth-middleware");
 
@@ -46,31 +46,28 @@ router.post("/register", async (req, res, next) => {
 router.post(
   "/login",
   validateLogin,
-  checkUserExists,
+  checkUserExistsByEmail,
   async (req, res, next) => {
     const { password } = req.body;
 
-    try {
-      const userFromDb = req.user;
+    const userFromDb = req.user;
 
-      const match = await AuthService.comparePasswords(
-        password,
-        userFromDb.password
-      );
+    const match = await AuthService.comparePasswords(
+      password,
+      userFromDb.password
+    );
 
-      if (!match) return next({ status: 400, message: "Invalid password" });
+    if (!match) return next({ status: 400, message: "Invalid password" });
 
-      const sub = userFromDb.email;
-      const payload = {
-        user_id: userFromDb._id,
-        name: userFromDb.full_name,
-      };
-      return res.send({
-        authToken: AuthService.createJwt(sub, payload),
-      });
-    } catch (err) {
-      next(err);
-    }
+    const sub = userFromDb.email;
+    const payload = {
+      user_id: userFromDb._id,
+      name: userFromDb.full_name,
+    };
+
+    res.status(200).json({
+      authToken: AuthService.createJwt(sub, payload),
+    });
   }
 );
 

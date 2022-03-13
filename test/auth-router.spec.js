@@ -50,20 +50,23 @@ describe("Login and Register endpoints", () => {
           .post("/api/auth/login")
           .send(requestBody)
           .expect(400, {
-            error: `Missing '${field}' in request body`,
+            message: `Missing '${field}' in request body`,
           });
       });
+    });
 
-      it(`responds with 400 'Invalid ${field}' when bad ${field}`, () => {
-        requestBody[field] = `invalid-${field}`;
+    it(`responds with 400 'That email is not registered to any user' when login attempt with an email that is not in the database`, () => {
+      const requestBody = {
+        email: "unusedemail@gmail.com",
+        password: testUsers[0].password,
+      };
 
-        return supertest(app)
-          .post("/api/auth/login")
-          .send(requestBody)
-          .expect(400, {
-            message: `Invalid ${field}`,
-          });
-      });
+      return supertest(app)
+        .post("/api/auth/login")
+        .send(requestBody)
+        .expect(400, {
+          message: "That email is not registered to any user",
+        });
     });
 
     it("responds 200 and JWT auth token using secret when valid credentials", () => {
