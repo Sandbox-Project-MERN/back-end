@@ -25,19 +25,27 @@ router.post("/register", async (req, res, next) => {
   try {
     const user = await AuthService.getUserWithEmail(regUser.email);
 
-    if (user) return next({ status: 400, message: "Email not available" });
+    if (user) return next({ status: 400, message: "email already in use" });
 
-    const newUser = await AuthService.createUser(regUser);
+    const userFromDb = await AuthService.createUser(regUser);
 
-    if (!newUser)
+    if (!userFromDb)
       return next({
         status: 400,
         message: "User not created, please try again",
       });
 
-    delete newUser.password;
+    const sub = userFromDb.email;
+    const payload = {
+      user_id: userFromDb._id,
+      name: userFromDb.full_name,
+    };
 
-    return res.status(201).send(newUser);
+    setTimeout(() => {
+      res.status(200).json({
+        authToken: AuthService.createJwt(sub, payload),
+      });
+    }, 3000);
   } catch (err) {
     next(err);
   }
@@ -65,9 +73,11 @@ router.post(
       name: userFromDb.full_name,
     };
 
-    res.status(200).json({
-      authToken: AuthService.createJwt(sub, payload),
-    });
+    setTimeout(() => {
+      res.status(200).json({
+        authToken: AuthService.createJwt(sub, payload),
+      });
+    }, 3000);
   }
 );
 

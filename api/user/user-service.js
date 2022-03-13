@@ -9,6 +9,12 @@ const UserService = {
     return await User.find({ email }).then(([user]) => user);
   },
 
+  getUserWhere: async (filter) => {
+    return await User.find(filter)
+      .select(["email", "full_name", "description"])
+      .then(([user]) => user);
+  },
+
   updateUser: async (_id, user) => {
     await User.updateOne({ _id }, user);
 

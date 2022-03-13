@@ -117,7 +117,7 @@ describe("Login and Register endpoints", () => {
         });
       });
 
-      it("responds with 400 'Email not available' when email already exists in db", () => {
+      it("responds with 400 'email already in use' when email already exists in db", () => {
         const badUserReg = Actions.makeNewUser();
         badUserReg.email = testUsers[0].email;
 
@@ -126,11 +126,11 @@ describe("Login and Register endpoints", () => {
           .set("Authorization", Actions.makeAuthHeader(testUsers[0]))
           .send(badUserReg)
           .expect(400, {
-            message: "Email not available",
+            message: "email already in use",
           });
       });
 
-      it("responds with 400 'Password must be longer than 8 characters' when password is less than 8 characters", () => {
+      it("responds with 400 'password must be longer than 8 characters' when password is less than 8 characters", () => {
         const shortPw = Actions.makeNewUser();
         shortPw.password = "short";
 
@@ -139,11 +139,11 @@ describe("Login and Register endpoints", () => {
           .set("Authorization", Actions.makeAuthHeader(testUsers[0]))
           .send(shortPw)
           .expect(400, {
-            message: "Password must be longer than 8 characters",
+            message: "password must be longer than 8 characters",
           });
       });
 
-      it("responds with 400 'Password must be shorter than 72 characters' when password more than 72 characters", () => {
+      it("responds with 400 'password must be shorter than 72 characters' when password more than 72 characters", () => {
         const longPw = Actions.makeNewUser();
         longPw.password = "*".repeat(73);
 
@@ -152,11 +152,11 @@ describe("Login and Register endpoints", () => {
           .set("Authorization", Actions.makeAuthHeader(testUsers[0]))
           .send(longPw)
           .expect(400, {
-            message: "Password must be less than 72 characters",
+            message: "password must be less than 72 characters",
           });
       });
 
-      it("responds with 400 'Password must not start or end with empty spaces' when password has spaces at beginning or end", () => {
+      it("responds with 400 'password must not start or end with empty spaces' when password has spaces at beginning or end", () => {
         const spaceyPw = Actions.makeNewUser();
         spaceyPw.password = " aP@ssw0rd!";
 
@@ -165,7 +165,7 @@ describe("Login and Register endpoints", () => {
           .set("Authorization", Actions.makeAuthHeader(testUsers[0]))
           .send(spaceyPw)
           .expect(400, {
-            message: "Password must not start or end with empty spaces",
+            message: "password must not start or end with empty spaces",
           })
           .then(() => {
             spaceyPw.password = "aP@ssw0rd! ";
@@ -174,7 +174,7 @@ describe("Login and Register endpoints", () => {
               .set("Authorization", Actions.makeAuthHeader(testUsers[0]))
               .send(spaceyPw)
               .expect(400, {
-                message: "Password must not start or end with empty spaces",
+                message: "password must not start or end with empty spaces",
               });
           });
       });
