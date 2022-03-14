@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 
 // global error handler
 app.use((err, req, res, next) => {
-  // added error handler to prevent sensitive information to leak in production
+  // prevent sensitive information to leak in production
   let response;
 
   if (NODE_ENV === "production") response = { message: "server error" };

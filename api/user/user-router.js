@@ -4,10 +4,13 @@ const { requireAuth } = require("../general-middleware/jwt-auth");
 const { emailAlreadyExists } = require("./user-middleware");
 const UserService = require("../user/user-service");
 const ImageService = require("../image/image-service");
+const bodyParser = require("body-parser");
 
 // get all users
 router.get("/", (req, res, next) => {
-  UserService.getAllUsers().then((users) => res.status(200).json(users));
+  setTimeout(() => {
+    UserService.getAllUsers().then((users) => res.status(200).json(users));
+  }, 3000);
 });
 
 // get user info by _id
@@ -33,8 +36,11 @@ router.put(
 
 router.post(
   "/image-upload/:_id",
+  bodyParser.json(),
   ImageService.uploadImage(),
   (req, res, next) => {
+    console.log(req.file, req.files, "hereI am");
+
     const { filename, id } = req.file;
 
     setTimeout(() => {

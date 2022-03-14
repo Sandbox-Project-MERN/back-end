@@ -73,11 +73,9 @@ router.post(
       name: userFromDb.full_name,
     };
 
-    setTimeout(() => {
-      res.status(200).json({
-        authToken: AuthService.createJwt(sub, payload),
-      });
-    }, 3000);
+    res.status(200).json({
+      authToken: AuthService.createJwt(sub, payload),
+    });
   }
 );
 
