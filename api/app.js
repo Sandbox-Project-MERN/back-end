@@ -12,7 +12,7 @@ const authRouter = require("./auth/auth-router");
 const userRouter = require("./user/user-router");
 const { router: imageRouter } = require("./image/image-router");
 
-// app.use(morgan(morganOption)); // add security & semantic middleware
+app.use(morgan(morganOption)); // add security & semantic middleware
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
@@ -27,13 +27,9 @@ app.get("/", (req, res) => {
 
 // global error handler
 app.use((err, req, res, next) => {
-  // prevent sensitive information to leak in production
-  let response;
-
-  if (NODE_ENV === "production") response = { message: "server error" };
-  else response = { message: err.message };
-
-  res.status(err.status || 500).json(response);
+  res
+    .status(err.status || 500)
+    .json({ message: err.message || "server error" });
 });
 
 module.exports = app;
