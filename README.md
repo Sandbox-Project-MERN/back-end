@@ -1,35 +1,47 @@
-# MONGODB / EXPRESS BOILERPLATE
+<h1 align="center">Welcome to the Sandbox Apps Back-end 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <img src="https://img.shields.io/badge/node-12.19.0-blue.svg" />
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</p>
 
-### Get your Express/MongoDB project up and running easily with this boilerplate
+> backend project
+
+## Prerequisites
+
+- node 12.19.0
+
+## Install
+
+```sh
+npm install
+```
+
+## Usage
+
+```sh
+npm run start
+```
+
+## Run tests
+
+```sh
+npm run test
+```
+
+## Author
+
+👤 **Erik Bahena**
+
+- Github: [@ErikBahena](https://github.com/ErikBahena)
+- LinkedIn: [@ErikBahena](https://linkedin.com/in/ErikBahena)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
 
 ---
 
-## Set up
-
-Complete the following steps to start a new project (NEW-PROJECT-NAME) with starter packages, folders and files:
-
-1. Clone this repository to your local machine `git clone https://github.com/jenna-chestnut/mongoDB-express-boilerplate.git NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
-
----
-
-## Scripts
-
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
-
-Run the tests `npm test`
-
-Run a watching test environment `npm run watch`
-
----
-
-## Deploying
-
-When your new project is ready for deployment, add a new Heroku application with `heroku create`.  
-This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's main branch.
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
