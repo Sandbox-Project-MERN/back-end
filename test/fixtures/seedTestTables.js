@@ -1,7 +1,7 @@
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
-const User = require("../../src/models/user-model");
+const User = require("../../api/user/user-model");
 
 const { makeFixtures } = require("./dbcontent.fixtures");
 
