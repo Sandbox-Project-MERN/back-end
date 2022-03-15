@@ -42,38 +42,11 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage });
 
-// @route GET /
-// @desc Loads form
-router.get("/", (req, res) => {
-  gfs.files.find().toArray((err, files) => {
-    if (!files || files.length === 0) res.status(200).json({ files: false });
-    else {
-      files.map((file) => {
-        if (
-          file.contentType === "image/jpeg" ||
-          file.contentType === "image/png"
-        )
-          file.isImage = true;
-        else file.isImage = false;
-      });
-
-      res.status(200).json({ files: files });
-    }
+const deleteImage = (_id) => {
+  gfs.remove({ _id, root: "user_images" }, (err, gridStore) => {
+    if (err) next({ status: 404, message: "Not an image" });
   });
-});
-
-// @route GET /files
-// @desc  Display all files in JSON
-router.get("/files", (req, res) => {
-  gfs.files.find().toArray((err, files) => {
-    // Check if files
-    if (!files || files.length === 0)
-      return next({ status: 404, message: "No Image Files Found" });
-
-    // Files exist
-    return res.json(files);
-  });
-});
+};
 
 // @route GET api/image/:filename
 // @desc Display Image
@@ -89,12 +62,4 @@ router.get("/:filename", (req, res, next) => {
   });
 });
 
-// @route DELETE api/image/:id
-// @desc  Delete file
-router.delete("/files/:id", (req, res, next) => {
-  gfs.remove({ _id: req.params.id, root: "user_images" }, (err, gridStore) => {
-    if (err) next({ status: 404, message: "Not an image" });
-  });
-});
-
-module.exports = { gfsConnect, router, upload };
+module.exports = { gfsConnect, router, upload, deleteImage };

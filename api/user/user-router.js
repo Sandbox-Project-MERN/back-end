@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { requireAuth } = require("../general-middleware/jwt-auth");
-const { emailAlreadyExists } = require("./user-middleware");
+const {
+  emailAlreadyExists,
+  userAlreadyHasImage,
+} = require("./user-middleware");
 const UserService = require("../user/user-service");
 const ImageService = require("../image/image-service");
 const bodyParser = require("body-parser");
@@ -33,6 +36,7 @@ router.put(
 router.post(
   "/image-upload/:_id",
   bodyParser.json(),
+  userAlreadyHasImage,
   ImageService.uploadImage(),
   (req, res, next) => {
     const { filename, id } = req.file;

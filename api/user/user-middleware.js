@@ -1,4 +1,5 @@
 const UserService = require("../user/user-service");
+const { deleteImage } = require("../image/image-router");
 
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL =
   /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&])[\S]+/;
@@ -44,8 +45,19 @@ const checkUserExistsByEmail = async (req, res, next) => {
     });
 };
 
+const userAlreadyHasImage = async (req, res, next) => {
+  const { photo_id } = await UserService.getUserWhere({
+    _id: req.params._id,
+  });
+
+  if (photo_id) deleteImage(photo_id);
+
+  next();
+};
+
 module.exports = {
   validatePassword,
   emailAlreadyExists,
   checkUserExistsByEmail,
+  userAlreadyHasImage,
 };
